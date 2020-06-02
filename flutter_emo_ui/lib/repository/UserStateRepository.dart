@@ -1,8 +1,8 @@
+import 'package:flutter_emo_ui/api_provider/UserStateApiProvider.dart';
 import 'package:flutter_emo_ui/model/UserState.dart';
-import 'package:flutter_emo_ui/restApi/UserStateApiManager.dart';
 
 class UserStateRepository {
-  final _restApiManager = UserStateApiManager();
+  final _restApiManager = UserStateApiProvider();
 
   Future<int> saveUserStateToServer(UserState userState) => _restApiManager.saveUserStateToServer(userState);
 

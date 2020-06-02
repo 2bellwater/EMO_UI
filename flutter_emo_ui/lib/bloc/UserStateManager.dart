@@ -1,25 +1,29 @@
-import 'package:flutter_emo_ui/bloc/AbstractBloc.dart';
-import 'package:flutter_emo_ui/model/UserState.dart';
-import 'package:flutter_emo_ui/repository/UserStateRepository.dart';
-import 'package:rxdart/rxdart.dart';
 
-class UserStateManager extends AbstractBloc {
-  final _repository = UserStateRepository();
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-  final _groupStateFetcher = PublishSubject<UserState>();
+enum UserStateEvent {
+  page_changed, 
+  state_changed 
+}
 
-//  Observable<List<UserState>> get groupStates => _groupStateFetcher.stream;
+enum UserState {
+  success,
+  failed
+}
 
-  Future<int> saveUserStateToServer(UserState userState) async {
-    int result = await _repository.saveUserStateToServer(userState);
-    //_sessionFetcher.sink.add(sessionModel);
-    return result;
-  }
+class UserStateManager extends Bloc<UserStateEvent, UserState>{
+  @override
+  UserState get initialState => UserState.success;
 
   @override
-  void dispose() {
-    // TODO: implement dispose
-    _groupStateFetcher.close();
+  Stream<UserState> mapEventToState(UserStateEvent event) async* {
+    switch (event) {
+      case UserStateEvent.state_changed:
+        yield UserState.success;
+        break;
+      default:
+        yield UserState.failed;
+        break;
+    }
   }
-
 }

@@ -28,6 +28,9 @@ dependencies:
   floating_search_bar: ^0.2.0
   http: ^0.12.0+2
   rxdart: ^0.24.0
+  flutter_bloc:
+  intro_slider: ^2.3.1
+  expandable_bottom_bar: any
 
 dev_dependencies:
   flutter_test:
