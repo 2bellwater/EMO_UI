@@ -2,6 +2,7 @@ import 'package:expandable_bottom_bar/expandable_bottom_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_emo_ui/bloc/UserStateManager.dart';
+import 'package:flutter_emo_ui/page/AppRouterPage.dart';
 import 'package:flutter_emo_ui/page/UserStatePage.dart';
 import 'package:flutter_emo_ui/theme/dark.dart';
 import 'package:flutter_emo_ui/util/const.dart';
@@ -21,24 +22,19 @@ class MyApp extends StatelessWidget {
     // SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
     // SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
     //   statusBarColor: isDark ? Constants.darkPrimary : Constants.lightPrimary,
-    //   statusBarIconBrightness: isDark?Brightness.light:Brightness.dark,
+    //   statusBarIweconBrightness: isDark?Brightness.light:Brightness.dark,
     // ));
     return MultiBlocProvider(
-      providers: [
-        BlocProvider<UserStateManager>(
-          create: (context) => UserStateManager(),
-        ),
-      ],
-      child: MaterialApp(
-        title: Constants.appName,
-        theme: ThemeDark.dark(ThemeData.dark()),
-        initialRoute: '/main',
-        routes: {
-          '/main': (context) => DefaultBottomBarController(
-                                child: UserStatePage(),
-                                ),
-        },
-      )
-    );
+        providers: [
+          BlocProvider<UserStateManager>(
+            create: (context) => UserStateManager(),
+          ),
+        ],
+        child: MaterialApp(
+          title: Constants.appName,
+          theme: ThemeDark.dark(ThemeData.dark()),
+          initialRoute: '/Login',
+          routes: routes,
+        ));
   }
 }
