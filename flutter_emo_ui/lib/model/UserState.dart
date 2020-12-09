@@ -5,8 +5,10 @@ class UserState {
   String _stateName;
   bool _blocked;
 
+  UserState(this._userID, this._stateName, this._blocked);
+
   String get userID => _userID;
-  String get state => _stateName;
+  String get stateName => _stateName;
   bool get blocked => _blocked;
 
   String toJson() {
@@ -17,8 +19,5 @@ class UserState {
     return convert.jsonEncode(request);
   }
 
-  void showNotification() {
-
-  }
-
+  void showNotification() {}
 }

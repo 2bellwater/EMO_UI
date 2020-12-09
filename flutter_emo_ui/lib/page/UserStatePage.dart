@@ -1,6 +1,10 @@
 import 'package:expandable_bottom_bar/expandable_bottom_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_emo_ui/bloc/UserStateManager.dart';
+import 'package:flutter_emo_ui/model/UserState.dart';
+import 'package:flutter_emo_ui/page/SubscribeUsersPage.dart';
+import 'package:flutter_emo_ui/widget/BasicTitle.dart';
+import 'package:flutter_emo_ui/widget/FlatBottomButton.dart';
+import 'package:flutter_emo_ui/widget/HorizontalStateListview.dart';
 
 //https://flutterawesome.com/play-music-audio-stored-in-assets-files-directly-from-flutter/
 //https://github.com/OjasKarmarkar/Beats/blob/master/lib/screens/Player.dart
@@ -14,72 +18,139 @@ class UserStatePage extends StatefulWidget {
 }
 
 class _UserStatePageState extends State<UserStatePage> {
+  double _screenHeight;
+  double _screenWidth;
+  BuildContext _context;
+
+  List<UserState> userStateList = [
+    UserState("aaa", "good", false),
+    UserState("aaa", "nice", false),
+    UserState("aaa", "hello", false),
+    UserState("aaa", "hahaha", false),
+    UserState("aaa", "notBad", false)
+  ];
 
   @override
   Widget build(BuildContext context) {
-
+    _context = context;
+    _screenHeight = MediaQuery.of(context).size.height;
+    _screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
-          backgroundColor: Theme.of(context).canvasColor,
+      backgroundColor: Theme.of(context).backgroundColor,
+      //appBar: getAppBar(context),
+      body: getBody(),
+      bottomNavigationBar: getBottomButtons(),
+    );
+  }
 
-          //Set to true for bottom appbar overlap body content
-          extendBody: true,
-
-          appBar: AppBar(
-            title: Text("Panel Showcase"),
-            backgroundColor: Theme.of(context).bottomAppBarColor,
-          ),
-
-          // Lets use docked FAB for handling state of sheet
-          floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-          floatingActionButton: GestureDetector(
-            // Set onVerticalDrag event to drag handlers of controller for swipe effect
-            onVerticalDragUpdate: DefaultBottomBarController.of(context).onDrag,
-            onVerticalDragEnd: DefaultBottomBarController.of(context).onDragEnd,
-            child: FloatingActionButton.extended(
-              label: Text("Pull up"),
-              elevation: 2,
-              backgroundColor: Colors.deepOrange,
-              foregroundColor: Colors.white,
-
-              //Set onPressed event to swap state of bottom bar
-              onPressed: () => DefaultBottomBarController.of(context).swap(),
-            ),
-          ),
-
-          // Actual expandable bottom bar
-          bottomNavigationBar: BottomExpandableAppBar(
-            expandedHeight: 550,
-            horizontalMargin: 16,
-            shape: AutomaticNotchedShape(
-                RoundedRectangleBorder(), StadiumBorder(side: BorderSide())),
-            expandedBackColor: Theme.of(context).backgroundColor,
-            expandedBody: Center(
-              child: Text("Hello world!"),
-            ),
-            bottomAppBarBody: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                mainAxisSize: MainAxisSize.max,
-                children: <Widget>[
-                  Expanded(
-                    child: Text(
-                      "Tets",
-                      textAlign: TextAlign.center,
-                    ),
+  Widget getBody() {
+    return SafeArea(
+        bottom: false,
+        child: Container(
+            padding: EdgeInsets.symmetric(horizontal: 15.0),
+            child: Center(
+                child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                  Center(
+                    child: getStateImageArea(),
                   ),
-                  Spacer(
-                    flex: 2,
+                  SizedBox(
+                    height: 30.0,
                   ),
-                  Expanded(
-                    child: Text(
-                      "Stet",
-                      textAlign: TextAlign.center,
-                    ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Center(
+                        child: Text(
+                          "Store opened",
+                          style: TextStyle(
+                              fontSize: 15.0,
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                      //getEditTextButton()
+                    ],
                   ),
-                ],
-              ),
-            ),
-          ),
-        );
+                  SizedBox(
+                    height: 20.0,
+                  ),
+                  Center(
+                    child: getEditTextButton(),
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  BasicTitle(
+                    text: "Bookmark",
+                    trailing: IconButton(
+                        icon: Icon(
+                          Icons.add,
+                          color: Colors.white,
+                          size: 25.0,
+                        ),
+                        onPressed: () {
+                          print("My coupons button clicked");
+                          // go to bookmark edit page
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (ctx) => SubscribeUsersPage()));
+                        }),
+                  ),
+                  HorizontalStateListView(
+                    bookmarks: userStateList,
+                    height: _screenHeight / 5,
+                  )
+                ]))));
+  }
+
+  Widget getStateImageArea() {
+    return MaterialButton(
+      onPressed: () {
+        print("getStateImageArea pressed");
+      },
+      color: Theme.of(context).primaryColor,
+      child: Icon(
+        Icons.photo,
+        size: 120,
+        color: Colors.white,
+      ),
+      padding: EdgeInsets.all(30),
+      shape: CircleBorder(),
+    );
+  }
+
+  Widget getEditTextButton() {
+    return MaterialButton(
+      onPressed: () {
+        print("getStateImageArea pressed");
+      },
+      color: Theme.of(context).primaryColor,
+      child: Icon(
+        Icons.edit,
+        size: 20,
+        color: Colors.white,
+      ),
+      //padding: EdgeInsets.all(5.0),
+      shape: CircleBorder(),
+    );
+  }
+
+  Widget getBottomButtons() {
+    return FlatBottomButton(
+      width: _screenWidth,
+      text: "SAVE",
+      onPressed: () {
+        print("Save button pressed");
+        // Navigator.push(
+        //     context, MaterialPageRoute(builder: (context) => QRScanPage()));
+      },
+    );
   }
 }
